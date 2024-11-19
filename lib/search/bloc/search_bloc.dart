@@ -16,30 +16,46 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<GifClicked>(gifClicked);
     on<InitialEvent>(initialEvent);
   }
+
+  // Handle InitialEvent
   Future<void> initialEvent(
       InitialEvent event, Emitter<SearchState> emit) async {
     emit(SearchLoadingState());
-    await Future.delayed(Duration(seconds: 3));
-    final newItems = await GiphyApi.fetchGifs("cats", 1);
-    print('Initial state uploaded');
-    emit(SearchLoadedSuccessState(gifs: newItems));
-  }
-
-  Future<void> searchButtonClicked(
-      SearchButtonClicked event, Emitter<SearchState> emit) async {
-    print("audio play");
-    final _audioPlayer = AudioPlayer();
     try {
-      await _audioPlayer.play(
-          AssetSource('FX/4Elements2OSTGoodMelodySFX.mp3'));
-      print('Audio play completed');
+      final newItems = await GiphyApi.fetchGifs("cats", 1);
+      emit(SearchLoadedSuccessState(gifs: newItems));
+      print('Initial state uploaded');
     } catch (e) {
-      print('Error playing audio: $e');
+      print('Error fetching initial data: $e');
+      emit(SearchErrorSuccessState());
     }
   }
 
+  // Handle SearchButtonClicked Event
+  Future<void> searchButtonClicked(
+      SearchButtonClicked event, Emitter<SearchState> emit) async {
+    final _audioPlayer = AudioPlayer();
+    try {
+      // Play sound
+      await _audioPlayer.play(AssetSource('FX/4Elements2OSTGoodMelodySFX.mp3'));
+      print('Audio play completed');
+
+      // Show loading while fetching data
+      emit(SearchLoadingState());
+
+      // Fetch GIFs based on the search query
+      final newItems = await GiphyApi.fetchGifs(event.text, 1); // Use event.text here
+      emit(SearchLoadedSuccessState(gifs: newItems));
+      print('GIFs fetched successfully for query: ${event.text}');
+    } catch (e) {
+      print('Error during search: $e');
+      emit(SearchErrorSuccessState());
+    }
+  }
+
+  // Handle GifClicked Event
   FutureOr<void> gifClicked(GifClicked event, Emitter<SearchState> emit) {
-    print('gif button clicked');
+    print('GIF button clicked');
     emit(SearchNavigateToDetailPage());
   }
 }

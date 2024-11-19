@@ -12,6 +12,8 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final SearchBloc searchBloc = SearchBloc();
+  final TextEditingController _textController =
+      TextEditingController(); // Added controller
 
   @override
   void initState() {
@@ -123,6 +125,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           ],
                         ),
                         child: TextField(
+                          controller: _textController,
                           decoration: InputDecoration(
                             labelText: 'Search for GIFs',
                             labelStyle: TextStyle(
@@ -141,13 +144,14 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ),
                               ),
                               onPressed: () {
-                                searchBloc.add(SearchButtonClicked());
+                                searchBloc.add(SearchButtonClicked(
+                                    text: _textController.text.trim()));
                               },
                             ),
                           ),
                           cursorColor: Color(0xFF4facfe),
                           onSubmitted: (value) {
-                            searchBloc.add(SearchButtonClicked());
+                            searchBloc.add(SearchButtonClicked(text: value.trim()));
                           },
                         ),
                       ),
