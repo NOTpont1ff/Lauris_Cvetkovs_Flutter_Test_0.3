@@ -38,31 +38,114 @@ class _SearchScreenState extends State<SearchScreen> {
           case SearchLoadedSuccessState:
             final successState = state as SearchLoadedSuccessState;
             return Scaffold(
-                appBar: AppBar(
-                  title: Text('GIF Search 0.2'),
-                  titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
-                  backgroundColor: Colors.teal[700],
-                  centerTitle: true,
-                  
+              appBar: AppBar(
+                elevation: 0,
+                toolbarHeight: 80,
+                backgroundColor: const Color.fromARGB(255, 24, 129, 214),
+                centerTitle: true,
+                flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(255, 19, 95, 161),
+                        Color(0xFF00f2fe)
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 15,
+                        offset: Offset(0, 10),
+                      ),
+                    ],
+                  ),
                 ),
-                backgroundColor: Colors.teal[50],
-                body: Column(
+                title: Text(
+                  'GIF Search 0.2',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black.withOpacity(0.4),
+                        blurRadius: 10,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              body: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://i.pinimg.com/736x/e5/84/e3/e584e3705a240bd65d40fb59918773ac.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Column(
                   children: [
                     Text("", style: TextStyle(fontSize: 10)),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xFF4facfe), Color(0xFF00f2fe)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 10,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(3.0),
                       child: Container(
-                        color: Colors.teal[200],
-                        padding: const EdgeInsets.all(17.0),
-                        
+                        padding: const EdgeInsets.symmetric(horizontal: 17.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.6),
+                              blurRadius: 10,
+                              offset: Offset(-2, -2),
+                            ),
+                          ],
+                        ),
                         child: TextField(
                           decoration: InputDecoration(
                             labelText: 'Search for GIFs',
+                            labelStyle: TextStyle(
+                              color: Colors.black.withOpacity(0.6),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            border: InputBorder.none,
                             suffixIcon: IconButton(
-                              icon: Icon(Icons.search),
-                              onPressed: () {},
+                              icon: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: Image.network(
+                                  'https://cdn2.iconfinder.com/data/icons/crystalproject/128x128/apps/search.png',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              onPressed: () {
+                                searchBloc.add(SearchButtonClicked());
+                              },
                             ),
                           ),
+                          cursorColor: Color(0xFF4facfe),
                           onSubmitted: (value) {
                             searchBloc.add(SearchButtonClicked());
                           },
@@ -77,7 +160,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                   gifModel: successState.gifs[index]);
                             }))
                   ],
-                ));
+                ),
+              ),
+            );
           case SearchErrorSuccessState:
             return Scaffold(
               body: Center(

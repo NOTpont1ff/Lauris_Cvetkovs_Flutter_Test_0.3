@@ -8,18 +8,22 @@ class GifTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(10),
-        
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: Colors.teal),
-            color: Colors.teal[500],
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100), 
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.9), 
+                  blurRadius: 14,
+                  offset: const Offset(0, 0),
+                ),
+              ],
             ),
-        child: Column(
-          children: [
-            
-            ClipRRect(
+            child: ClipRRect(
               borderRadius: BorderRadius.circular(100),
               child: SizedBox.fromSize(
                 size: const Size.fromRadius(144),
@@ -29,7 +33,9 @@ class GifTileWidget extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
