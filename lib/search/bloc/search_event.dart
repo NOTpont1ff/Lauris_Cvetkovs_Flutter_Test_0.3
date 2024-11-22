@@ -10,6 +10,7 @@ class SearchButtonClicked extends SearchEvent {
   
   SearchButtonClicked({required this.text});
   
+  
 }
 
 class GifClicked extends SearchEvent {}

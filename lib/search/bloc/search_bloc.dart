@@ -22,9 +22,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       InitialEvent event, Emitter<SearchState> emit) async {
     emit(SearchLoadingState());
     try {
-      final newItems = await GiphyApi.fetchGifs("cats", 1);
-      emit(SearchLoadedSuccessState(gifs: newItems));
-      print('Initial state uploaded');
+      //final newItems = await GiphyApi.fetchGifs("cats", 1);
+      
+      emit(SearchInitial());
+      
     } catch (e) {
       print('Error fetching initial data: $e');
       emit(SearchErrorSuccessState());
