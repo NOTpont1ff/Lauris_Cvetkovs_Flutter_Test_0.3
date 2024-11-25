@@ -61,9 +61,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   )),
             );
 
-
-
-
           case SearchLoadedSuccessState:
             final successState = state as SearchLoadedSuccessState;
             return Scaffold(
@@ -91,8 +88,8 @@ class _SearchScreenState extends State<SearchScreen> {
                               onTap: () {
                                 print(
                                     'GIF clicked: ${successState.gifs[index].title}');
-                                searchBloc.add(GifClicked(
-                                    gif: successState.gifs[index]));
+                                searchBloc.add(
+                                    GifClicked(gif: successState.gifs[index]));
                               },
                               child: GifTileWidget(
                                 gifModel: successState.gifs[index],
@@ -105,13 +102,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   )),
             );
 
-
-
-
-
           case SearchDetailState:
-          final successState = state as SearchDetailState;
-          return Scaffold(
+            final successState = state as SearchDetailState;
+            return Scaffold(
               body: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -128,9 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         style: TextStyle(fontSize: 10),
                       ),
                       _buildSearchBar(),
-                      SearchDetail(
-                                gifModel: successState.gif)
-
+                      SearchDetail(gifModel: successState.gif)
                     ],
                   )),
             );
@@ -204,7 +195,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
           cursorColor: Color(0xFF4facfe),
-          onSubmitted: (value) {
+          onChanged: (value) {
             searchBloc.add(SearchButtonClicked(text: value.trim()));
           },
         ),
