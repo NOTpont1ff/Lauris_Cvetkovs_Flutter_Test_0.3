@@ -17,35 +17,25 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<InitialEvent>(initialEvent);
   }
 
-  // Handle InitialEvent
   Future<void> initialEvent(
       InitialEvent event, Emitter<SearchState> emit) async {
     emit(SearchLoadingState());
     try {
-      //final newItems = await GiphyApi.fetchGifs("cats", 1);
-      
       emit(SearchInitial());
-      
     } catch (e) {
       print('Error fetching initial data: $e');
       emit(SearchErrorSuccessState());
     }
   }
 
-  // Handle SearchButtonClicked Event
   Future<void> searchButtonClicked(
       SearchButtonClicked event, Emitter<SearchState> emit) async {
     final _audioPlayer = AudioPlayer();
     try {
-      // Play sound
       await _audioPlayer.play(AssetSource('FX/4Elements2OSTGoodMelodySFX.mp3'));
       print('Audio play completed');
-
-      // Show loading while fetching data
       emit(SearchLoadingState());
-
-      // Fetch GIFs based on the search query
-      final newItems = await GiphyApi.fetchGifs(event.text, 1); // Use event.text here
+      final newItems = await GiphyApi.fetchGifs(event.text, 1);
       emit(SearchLoadedSuccessState(gifs: newItems));
       print('GIFs fetched successfully for query: ${event.text}');
     } catch (e) {
@@ -54,9 +44,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     }
   }
 
-  // Handle GifClicked Event
   FutureOr<void> gifClicked(GifClicked event, Emitter<SearchState> emit) {
-    print('GIF button clicked');
-    emit(SearchNavigateToDetailPage());
+    print('Clicked gif with id: ${event.gif.title}');
+
+    final GifModel gif =  event.gif;
+    emit(SearchDetailState(gif: gif));
   }
 }

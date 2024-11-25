@@ -4,12 +4,12 @@ class BuildAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100, // Explicit height for the custom AppBar
+      height: 100, 
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color(0xFF4facfe), // Light blue
-            Color(0xFF00f2fe), // Cyan
+            Color(0xFF4facfe), 
+            Color(0xFF00f2fe), 
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -26,11 +26,11 @@ class BuildAppbar extends StatelessWidget {
           ),
         ],
       ),
-      alignment: Alignment.center, // Center the title vertically
+      alignment: Alignment.center, 
       child: Text(
         "GIF Search 0.2",
         style: TextStyle(
-          fontFamily: 'Arial', // Use a modern sans-serif font to mimic Frutiger
+          fontFamily: 'Arial',
           fontSize: 24,
           fontWeight: FontWeight.w600,
           color: Colors.white,

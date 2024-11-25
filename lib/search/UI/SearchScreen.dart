@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gif_with_bloc/search/UI/Enter_text.dart';
 import 'package:gif_with_bloc/search/UI/Build_AppBar.dart';
 import 'package:gif_with_bloc/search/UI/GIF_tile_widget.dart';
+import 'package:gif_with_bloc/search/UI/SearchDetail.dart';
 import 'package:gif_with_bloc/search/bloc/search_bloc.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -59,6 +60,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     ],
                   )),
             );
+
+
+
+
           case SearchLoadedSuccessState:
             final successState = state as SearchLoadedSuccessState;
             return Scaffold(
@@ -72,24 +77,63 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   child: Column(
                     children: [
-                       BuildAppbar()
-                     ,
+                      BuildAppbar(),
                       Text(
                         '',
                         style: TextStyle(fontSize: 10),
                       ),
                       _buildSearchBar(),
                       Flexible(
-                          child: ListView.builder(
-                              itemCount: successState.gifs.length,
-                              itemBuilder: (context, index) {
-                                return GifTileWidget(
-                                    gifModel: successState.gifs[index]);
-                              }))
+                        child: ListView.builder(
+                          itemCount: successState.gifs.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                print(
+                                    'GIF clicked: ${successState.gifs[index].title}');
+                                searchBloc.add(GifClicked(
+                                    gif: successState.gifs[index]));
+                              },
+                              child: GifTileWidget(
+                                gifModel: successState.gifs[index],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ],
                   )),
             );
 
+
+
+
+
+          case SearchDetailState:
+          final successState = state as SearchDetailState;
+          return Scaffold(
+              body: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://i.pinimg.com/736x/e5/84/e3/e584e3705a240bd65d40fb59918773ac.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      BuildAppbar(),
+                      Text(
+                        '',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                      _buildSearchBar(),
+                      SearchDetail(
+                                gifModel: successState.gif)
+
+                    ],
+                  )),
+            );
           case SearchErrorSuccessState:
             return Scaffold(
               body: Center(

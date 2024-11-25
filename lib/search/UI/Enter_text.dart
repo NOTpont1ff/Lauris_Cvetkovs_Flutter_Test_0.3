@@ -9,7 +9,7 @@ class EnterText extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 0, 0, 0)
-              .withOpacity(0.4), // Frutiger Aero feel
+              .withOpacity(0.4),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(

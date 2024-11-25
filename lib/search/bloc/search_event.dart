@@ -7,10 +7,10 @@ class InitialEvent extends SearchEvent {}
 
 class SearchButtonClicked extends SearchEvent {
   final String text;
-  
   SearchButtonClicked({required this.text});
-  
-  
 }
 
-class GifClicked extends SearchEvent {}
+class GifClicked extends SearchEvent {
+  final GifModel gif;
+  GifClicked({required this.gif});
+}
