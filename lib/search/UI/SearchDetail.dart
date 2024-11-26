@@ -66,7 +66,6 @@ class SearchDetail extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  
                   Divider(color: Colors.blue.withOpacity(0.5), thickness: 1),
                   SizedBox(height: 20),
                   Text(
@@ -87,7 +86,6 @@ class SearchDetail extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  
                 ],
               ),
             ),

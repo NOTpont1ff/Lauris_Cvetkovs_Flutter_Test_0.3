@@ -4,12 +4,12 @@ class BuildAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100, 
+      height: 100,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color(0xFF4facfe), 
-            Color(0xFF00f2fe), 
+            Color(0xFF4facfe),
+            Color(0xFF00f2fe),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -26,7 +26,7 @@ class BuildAppbar extends StatelessWidget {
           ),
         ],
       ),
-      alignment: Alignment.center, 
+      alignment: Alignment.center,
       child: Text(
         "GIF Search 0.2",
         style: TextStyle(

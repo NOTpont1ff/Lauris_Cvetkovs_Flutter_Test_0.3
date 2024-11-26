@@ -1,8 +1,6 @@
-
 part of 'search_bloc.dart';
 
-@immutable
-sealed class SearchEvent {}
+abstract class SearchEvent {}
 
 class InitialEvent extends SearchEvent {}
 
@@ -16,8 +14,7 @@ class GifClicked extends SearchEvent {
   GifClicked({required this.gif});
 }
 
-EventTransformer<Event> debounce<Event>(Duration duration) {
-  return (events, mapper) {
-    return events.debounceTime(duration).flatMap(mapper);
-  };
+class LoadMoreGifs extends SearchEvent {
+  final String text;
+  LoadMoreGifs({required this.text});
 }

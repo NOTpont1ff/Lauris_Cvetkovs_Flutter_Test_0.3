@@ -14,10 +14,10 @@ class GifTileWidget extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100), 
+              borderRadius: BorderRadius.circular(100),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.9), 
+                  color: Colors.black.withOpacity(0.9),
                   blurRadius: 14,
                   offset: const Offset(0, 0),
                 ),

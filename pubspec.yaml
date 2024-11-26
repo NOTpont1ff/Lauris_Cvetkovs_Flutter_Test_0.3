@@ -34,6 +34,7 @@ dependencies:
   flutter_bloc:
   audioplayers: ^6.1.0
   rxdart: ^0.27.7
+  connectivity_plus: ^5.0.2 
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -65,8 +66,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-      - assets/FX/4Elements2OSTGoodMelodySFX.mp3
+  #assets:
+  #    - assets/FX/4Elements2OSTGoodMelodySFX.mp3
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

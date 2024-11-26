@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class EnterText extends StatelessWidget {
+class NoGifsFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,7 +27,7 @@ class EnterText extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Welcome to GIF Search!",
+              "No Gifs Found :(",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -44,24 +44,14 @@ class EnterText extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              "Type a keyword in the search box to find the perfect GIF.",
+              "Try searching something else",
               style: TextStyle(
                 fontSize: 20,
                 color: const Color.fromARGB(169, 255, 255, 255),
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 40),
-            Divider(color: Colors.blue.withOpacity(0.5), thickness: 1),
-            SizedBox(height: 20),
-            Text(
-              "This app is made by Lauris Cvetkovs, using Flutter version 3.24.3.\n\nThe UI is inspired by Frutiger Aero style.",
-              style: TextStyle(
-                fontSize: 20,
-                color: const Color.fromARGB(166, 255, 255, 255),
-              ),
-              textAlign: TextAlign.center,
-            ),
+            
           ],
         ),
       ),

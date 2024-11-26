@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gif_with_bloc/search/UI/Enter_text.dart';
 import 'package:gif_with_bloc/search/UI/Build_AppBar.dart';
 import 'package:gif_with_bloc/search/UI/GIF_tile_widget.dart';
+import 'package:gif_with_bloc/search/UI/No_Gifs_Found.dart';
 import 'package:gif_with_bloc/search/UI/SearchDetail.dart';
 import 'package:gif_with_bloc/search/bloc/search_bloc.dart';
 
@@ -81,21 +82,35 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       _buildSearchBar(),
                       Flexible(
-                        child: ListView.builder(
-                          itemCount: successState.gifs.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                print(
-                                    'GIF clicked: ${successState.gifs[index].title}');
-                                searchBloc.add(
-                                    GifClicked(gif: successState.gifs[index]));
-                              },
-                              child: GifTileWidget(
-                                gifModel: successState.gifs[index],
-                              ),
-                            );
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification scrollInfo) {
+                            if (scrollInfo.metrics.pixels >=
+                                scrollInfo.metrics.maxScrollExtent * 0.9) {
+                              searchBloc.add(LoadMoreGifs(
+                                  text: _textController.text.trim()));
+                            }
+                            return false;
                           },
+                          child: ListView.builder(
+                            itemCount: successState.gifs.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == successState.gifs.length) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              return GestureDetector(
+                                onTap: () {
+                                  print(
+                                      'GIF clicked: ${successState.gifs[index].title}');
+                                  searchBloc.add(GifClicked(
+                                      gif: successState.gifs[index]));
+                                },
+                                child: GifTileWidget(
+                                  gifModel: successState.gifs[index],
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -125,10 +140,68 @@ class _SearchScreenState extends State<SearchScreen> {
                     ],
                   )),
             );
-          case SearchErrorSuccessState:
+          case NoGifsFoundState:
             return Scaffold(
+              body: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://i.pinimg.com/736x/e5/84/e3/e584e3705a240bd65d40fb59918773ac.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      BuildAppbar(),
+                      Text(
+                        '',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                      _buildSearchBar(),
+                      NoGifsFound(),
+                    ],
+                  )),
+            );
+          case SearchErrorState:
+            final errorState = state as SearchErrorState;
+            return Scaffold(
+              backgroundColor: Colors.white,
               body: Center(
-                child: Text("ERROR"),
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.red.shade300, Colors.red.shade700],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        offset: Offset(0, 10),
+                        blurRadius: 15,
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    errorState.message,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 5.0,
+                          color: Colors.black.withOpacity(0.3),
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             );
           default:
