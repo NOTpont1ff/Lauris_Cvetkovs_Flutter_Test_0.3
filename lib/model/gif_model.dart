@@ -16,7 +16,9 @@ class GifModel {
       id: json['id'],
       title: json['title'],
       url: json['images']['fixed_height']['url'],
-      user: json['username'] ?? 'Unknown',
+      user: json['username'] != null && json['username'] != ""
+          ? json['username']
+          : "Unknown",
     );
   }
 }
