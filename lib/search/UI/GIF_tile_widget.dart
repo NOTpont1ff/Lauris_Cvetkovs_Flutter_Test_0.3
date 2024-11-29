@@ -8,13 +8,13 @@ class GifTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(10),
-      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(1),
+      padding: const EdgeInsets.all(1),
       child: Column(
         children: [
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
+              borderRadius: BorderRadius.circular(50),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.9),
@@ -24,9 +24,9 @@ class GifTileWidget extends StatelessWidget {
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
+              borderRadius: BorderRadius.circular(50),
               child: SizedBox.fromSize(
-                size: const Size.fromRadius(144),
+                size: const Size.fromRadius(90),
                 child: Image.network(
                   gifModel.url,
                   fit: BoxFit.cover,

@@ -83,35 +83,67 @@ class _SearchScreenState extends State<SearchScreen> {
                       _buildSearchBar(),
                       Flexible(
                         child: NotificationListener<ScrollNotification>(
-                          onNotification: (ScrollNotification scrollInfo) {
-                            if (scrollInfo.metrics.pixels >=
-                                scrollInfo.metrics.maxScrollExtent * 0.9) {
-                              searchBloc.add(LoadMoreGifs(
-                                  text: _textController.text.trim()));
-                            }
-                            return false;
-                          },
-                          child: ListView.builder(
-                            itemCount: successState.gifs.length + 1,
-                            itemBuilder: (context, index) {
-                              if (index == successState.gifs.length) {
-                                return Center(
-                                    child: CircularProgressIndicator());
+                            onNotification: (ScrollNotification scrollInfo) {
+                              if (scrollInfo.metrics.pixels >=
+                                  scrollInfo.metrics.maxScrollExtent * 0.9) {
+                                searchBloc.add(LoadMoreGifs(
+                                    text: _textController.text.trim()));
                               }
-                              return GestureDetector(
-                                onTap: () {
-                                  print(
-                                      'GIF clicked: ${successState.gifs[index].title}');
-                                  searchBloc.add(GifClicked(
-                                      gif: successState.gifs[index]));
-                                },
-                                child: GifTileWidget(
-                                  gifModel: successState.gifs[index],
-                                ),
-                              );
+                              return false;
                             },
-                          ),
-                        ),
+                            child:
+                                // ListView.builder(
+                                //   itemCount: successState.gifs.length + 1,
+                                //   itemBuilder: (context, index) {
+                                //     if (index == successState.gifs.length) {
+                                //       return Center(
+                                //           child: CircularProgressIndicator());
+                                //     }
+                                //     return GestureDetector(
+                                //       onTap: () {
+                                //         print(
+                                //             'GIF clicked: ${successState.gifs[index].title}');
+                                //         searchBloc.add(GifClicked(
+                                //             gif: successState.gifs[index]));
+                                //       },
+                                //       child: GifTileWidget(
+                                //         gifModel: successState.gifs[index],
+                                //       ),
+                                //     );
+                                //   },
+                                // ),
+                                GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount:
+                                    2, // Number of columns in the grid
+                                crossAxisSpacing:
+                                    0.1, // Horizontal spacing between grid items
+                                mainAxisSpacing:
+                                    0.1, // Vertical spacing between grid items
+                                childAspectRatio:
+                                  1, // Adjust to control the aspect ratio of the grid items
+                              ),
+                              itemCount: successState.gifs.length + 1,
+                              itemBuilder: (context, index) {
+                                if (index == successState.gifs.length) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                return GestureDetector(
+                                  onTap: () {
+                                    print(
+                                        'GIF clicked: ${successState.gifs[index].title}');
+                                    searchBloc.add(GifClicked(
+                                        gif: successState.gifs[index]));
+                                  },
+                                  child: GifTileWidget(
+                                    gifModel: successState.gifs[index],
+                                  ),
+                                );
+                              },
+                            )),
                       ),
                     ],
                   )),
