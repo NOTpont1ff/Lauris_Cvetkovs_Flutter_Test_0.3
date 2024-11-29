@@ -35,6 +35,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
       return;
     }
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      emit(SearchErrorState(message: 'No internet connection.'));
+      return;
+    }
     //emit(SearchLoadingState());
     try {
       final gifs = await GiphyApi.fetchGifs(_currentQuery, _page);
@@ -51,6 +56,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   Future<void> _onLoadMoreGifs(
       LoadMoreGifs event, Emitter<SearchState> emit) async {
+        var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      emit(SearchErrorState(message: 'No internet connection.'));
+      return;
+    }
     final currentState = state;
     if (currentState is SearchLoadedSuccessState &&
         !currentState.hasReachedMax) {
@@ -70,17 +80,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   void _onGifClicked(GifClicked event, Emitter<SearchState> emit) {
+    
     emit(SearchDetailState(gif: event.gif));
   }
 
   Future<void> _onInitialEvent(
       InitialEvent event, Emitter<SearchState> emit) async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
-      emit(SearchErrorState(message: 'No internet connection.'));
-      return;
-    }
-
+    
+//emit(SearchErrorState(message: 'No internet connection.'));
     emit(SearchInitial());
   }
 }

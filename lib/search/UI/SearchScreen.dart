@@ -44,8 +44,8 @@ class _SearchScreenState extends State<SearchScreen> {
               body: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                          'https://i.pinimg.com/736x/e5/84/e3/e584e3705a240bd65d40fb59918773ac.jpg'),
+                      image: AssetImage(
+                          'assets/e584e3705a240bd65d40fb59918773ac.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -68,8 +68,8 @@ class _SearchScreenState extends State<SearchScreen> {
               body: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                          'https://i.pinimg.com/736x/e5/84/e3/e584e3705a240bd65d40fb59918773ac.jpg'),
+                      image: AssetImage(
+                          'assets/e584e3705a240bd65d40fb59918773ac.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -123,8 +123,8 @@ class _SearchScreenState extends State<SearchScreen> {
               body: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                          'https://i.pinimg.com/736x/e5/84/e3/e584e3705a240bd65d40fb59918773ac.jpg'),
+                      image: AssetImage(
+                          'assets/e584e3705a240bd65d40fb59918773ac.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -136,6 +136,34 @@ class _SearchScreenState extends State<SearchScreen> {
                         style: TextStyle(fontSize: 10),
                       ),
                       _buildSearchBar(),
+                      Row(children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              searchBloc.add(SearchButtonClicked(
+                                  text: _textController.text.trim()));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.lightBlue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              elevation: 8,
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.arrow_left, color: Colors.white),
+                                Text(
+                                  'Go Back',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ]),
                       SearchDetail(gifModel: successState.gif)
                     ],
                   )),
@@ -145,8 +173,8 @@ class _SearchScreenState extends State<SearchScreen> {
               body: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                          'https://i.pinimg.com/736x/e5/84/e3/e584e3705a240bd65d40fb59918773ac.jpg'),
+                      image: AssetImage(
+                          'assets/e584e3705a240bd65d40fb59918773ac.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -167,42 +195,57 @@ class _SearchScreenState extends State<SearchScreen> {
             return Scaffold(
               backgroundColor: Colors.white,
               body: Center(
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.red.shade300, Colors.red.shade700],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        offset: Offset(0, 10),
-                        blurRadius: 15,
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    errorState.message,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 5.0,
-                          color: Colors.black.withOpacity(0.3),
-                          offset: Offset(0, 2),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.red.shade300, Colors.red.shade700],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                      ],
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            offset: Offset(0, 10),
+                            blurRadius: 15,
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        errorState.message,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 5.0,
+                              color: Colors.black.withOpacity(0.3),
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
+                    TextButton(
+                      style: ButtonStyle(
+                        foregroundColor:
+                            WidgetStateProperty.all<Color>(Colors.blue),
+                      ),
+                      onPressed: () {
+                        searchBloc.add(InitialEvent());
+                      },
+                      child: Text('Go to the initial page',
+                          style: TextStyle(fontSize: 17)),
+                    )
+                  ])),
             );
           default:
             return SizedBox();
@@ -252,19 +295,9 @@ class _SearchScreenState extends State<SearchScreen> {
               fontWeight: FontWeight.w400,
             ),
             border: InputBorder.none,
-            suffixIcon: IconButton(
-              icon: SizedBox(
-                width: 24,
-                height: 24,
-                child: Image.network(
-                  'https://cdn2.iconfinder.com/data/icons/crystalproject/128x128/apps/search.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-              onPressed: () {
-                searchBloc.add(
-                    SearchButtonClicked(text: _textController.text.trim()));
-              },
+            suffixIcon: Icon(
+              Icons.search_outlined,
+              size: 30.0,
             ),
           ),
           cursorColor: Color(0xFF4facfe),
