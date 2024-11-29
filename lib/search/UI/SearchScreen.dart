@@ -122,13 +122,28 @@ class _SearchScreenState extends State<SearchScreen> {
                                 mainAxisSpacing:
                                     0.1, // Vertical spacing between grid items
                                 childAspectRatio:
-                                  1, // Adjust to control the aspect ratio of the grid items
+                                    1, // Adjust to control the aspect ratio of the grid items
                               ),
                               itemCount: successState.gifs.length + 1,
                               itemBuilder: (context, index) {
                                 if (index == successState.gifs.length) {
                                   return Center(
-                                    child: CircularProgressIndicator(),
+                                    child: Text(
+                                      'No more\n GIFs :(',
+                                      style: TextStyle(
+                                        fontSize: 29,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                        shadows: [
+                                          Shadow(
+                                            color:
+                                                Colors.black.withOpacity(0.4),
+                                            blurRadius: 10,
+                                            offset: Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   );
                                 }
                                 return GestureDetector(
