@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../model/gif_model.dart';
 
 class GiphyApi {
-  static const String _apiKey = 't0xzHJPG7CFP329JJkquV784LsyCHFsP';
+  static const String _apiKey = 'pH0IuBOOD4LkybhhTyulO94w4bh6OtP9';
 
   static const String _baseUrl = 'https://api.giphy.com/v1/gifs/search';
 

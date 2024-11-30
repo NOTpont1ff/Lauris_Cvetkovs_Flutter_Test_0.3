@@ -41,201 +41,151 @@ class _SearchScreenState extends State<SearchScreen> {
             );
           case SearchInitial:
             return Scaffold(
+              backgroundColor: const Color.fromARGB(255, 39, 39, 39),
               body: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                          'assets/e584e3705a240bd65d40fb59918773ac.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
                   child: Column(
-                    children: [
-                      BuildAppbar(),
-                      Text(
-                        '',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                      _buildSearchBar(),
-                      EnterText(),
-                    ],
-                  )),
+                children: [
+                  BuildAppbar(),
+                  Text(
+                    '',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  _buildSearchBar(),
+                  EnterText(),
+                ],
+              )),
             );
 
           case SearchLoadedSuccessState:
             final successState = state as SearchLoadedSuccessState;
             return Scaffold(
+              backgroundColor: const Color.fromARGB(255, 39, 39, 39),
               body: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                          'assets/e584e3705a240bd65d40fb59918773ac.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
                   child: Column(
-                    children: [
-                      BuildAppbar(),
-                      Text(
-                        '',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                      _buildSearchBar(),
-                      Flexible(
-                        child: NotificationListener<ScrollNotification>(
-                            onNotification: (ScrollNotification scrollInfo) {
-                              if (scrollInfo.metrics.pixels >=
-                                  scrollInfo.metrics.maxScrollExtent * 0.9) {
-                                searchBloc.add(LoadMoreGifs(
-                                    text: _textController.text.trim()));
-                              }
-                              return false;
-                            },
-                            child:
-                                // ListView.builder(
-                                //   itemCount: successState.gifs.length + 1,
-                                //   itemBuilder: (context, index) {
-                                //     if (index == successState.gifs.length) {
-                                //       return Center(
-                                //           child: CircularProgressIndicator());
-                                //     }
-                                //     return GestureDetector(
-                                //       onTap: () {
-                                //         print(
-                                //             'GIF clicked: ${successState.gifs[index].title}');
-                                //         searchBloc.add(GifClicked(
-                                //             gif: successState.gifs[index]));
-                                //       },
-                                //       child: GifTileWidget(
-                                //         gifModel: successState.gifs[index],
-                                //       ),
-                                //     );
-                                //   },
-                                // ),
-                                GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount:
-                                    2, // Number of columns in the grid
-                                crossAxisSpacing:
-                                    0.1, // Horizontal spacing between grid items
-                                mainAxisSpacing:
-                                    0.1, // Vertical spacing between grid items
-                                childAspectRatio:
-                                    1, // Adjust to control the aspect ratio of the grid items
-                              ),
-                              itemCount: successState.gifs.length + 1,
-                              itemBuilder: (context, index) {
-                                if (index == successState.gifs.length) {
-                                  return Center(
-                                    child: Text(
-                                      'No more\n GIFs :(',
-                                      style: TextStyle(
-                                        fontSize: 29,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white,
-                                        shadows: [
-                                          Shadow(
-                                            color:
-                                                Colors.black.withOpacity(0.4),
-                                            blurRadius: 10,
-                                            offset: Offset(0, 2),
-                                          ),
-                                        ],
+                children: [
+                  BuildAppbar(),
+                  Text(
+                    '',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  _buildSearchBar(),
+                  Flexible(
+                    child: NotificationListener<ScrollNotification>(
+                        onNotification: (ScrollNotification scrollInfo) {
+                          if (scrollInfo.metrics.pixels >=
+                              scrollInfo.metrics.maxScrollExtent * 0.9) {
+                            searchBloc.add(LoadMoreGifs(
+                                text: _textController.text.trim()));
+                          }
+                          return false;
+                        },
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 0.1,
+                            mainAxisSpacing: 0.1,
+                            childAspectRatio: 1,
+                          ),
+                          itemCount: successState.gifs.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == successState.gifs.length) {
+                              return Center(
+                                child: Text(
+                                  'No more\n GIFs :(',
+                                  style: TextStyle(
+                                    fontSize: 29,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    shadows: [
+                                      Shadow(
+                                        color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.4),
+                                        blurRadius: 10,
+                                        offset: Offset(0, 2),
                                       ),
-                                    ),
-                                  );
-                                }
-                                return GestureDetector(
-                                  onTap: () {
-                                    print(
-                                        'GIF clicked: ${successState.gifs[index].title}');
-                                    searchBloc.add(GifClicked(
-                                        gif: successState.gifs[index]));
-                                  },
-                                  child: GifTileWidget(
-                                    gifModel: successState.gifs[index],
+                                    ],
                                   ),
-                                );
+                                ),
+                              );
+                            }
+                            return GestureDetector(
+                              onTap: () {
+                                print(
+                                    'GIF clicked: ${successState.gifs[index].title}');
+                                searchBloc.add(
+                                    GifClicked(gif: successState.gifs[index]));
                               },
-                            )),
-                      ),
-                    ],
-                  )),
+                              child: GifTileWidget(
+                                gifModel: successState.gifs[index],
+                              ),
+                            );
+                          },
+                        )),
+                  ),
+                ],
+              )),
             );
 
           case SearchDetailState:
             final successState = state as SearchDetailState;
             return Scaffold(
+              backgroundColor: const Color.fromARGB(255, 39, 39, 39),
               body: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                          'assets/e584e3705a240bd65d40fb59918773ac.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
                   child: Column(
-                    children: [
-                      BuildAppbar(),
-                      Text(
-                        '',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                      _buildSearchBar(),
-                      Row(children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              searchBloc.add(SearchButtonClicked(
-                                  text: _textController.text.trim()));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.lightBlue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              elevation: 8,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.arrow_left, color: Colors.white),
-                                Text(
-                                  'Go Back',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ),
+                children: [
+                  BuildAppbar(),
+                  Text(
+                    '',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  _buildSearchBar(),
+                  Row(children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          searchBloc.add(SearchButtonClicked(
+                              text: _textController.text.trim()));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 79, 199, 254),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                        )
-                      ]),
-                      SearchDetail(gifModel: successState.gif)
-                    ],
-                  )),
+                          elevation: 8,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.arrow_left, color: Colors.white),
+                            Text(
+                              'Go Back',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ]),
+                  SearchDetail(gifModel: successState.gif)
+                ],
+              )),
             );
           case NoGifsFoundState:
             return Scaffold(
+              backgroundColor: const Color.fromARGB(255, 39, 39, 39),
               body: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                          'assets/e584e3705a240bd65d40fb59918773ac.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
                   child: Column(
-                    children: [
-                      BuildAppbar(),
-                      Text(
-                        '',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                      _buildSearchBar(),
-                      NoGifsFound(),
-                    ],
-                  )),
+                children: [
+                  BuildAppbar(),
+                  Text(
+                    '',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  _buildSearchBar(),
+                  NoGifsFound(),
+                ],
+              )),
             );
           case SearchErrorState:
             final errorState = state as SearchErrorState;
@@ -304,34 +254,16 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _buildSearchBar() {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF4facfe), Color(0xFF00f2fe)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
         borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
       ),
-      padding: const EdgeInsets.all(3.0),
+      padding: const EdgeInsets.all(7.0),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 17.0),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.white.withOpacity(0.6),
-              blurRadius: 10,
-              offset: Offset(-2, -2),
-            ),
-          ],
-        ),
+            color: Colors.white.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+                color: const Color.fromARGB(255, 79, 199, 254), width: 4)),
         child: TextField(
           controller: _textController,
           decoration: InputDecoration(

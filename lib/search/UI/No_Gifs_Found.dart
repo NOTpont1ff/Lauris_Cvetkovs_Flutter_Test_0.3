@@ -7,22 +7,7 @@ class NoGifsFound extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Container(
         padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.4),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.blueAccent.withOpacity(0.2),
-              blurRadius: 10,
-              offset: Offset(0, 5),
-            ),
-            BoxShadow(
-              color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
-              blurRadius: 10,
-              offset: Offset(-3, -3),
-            ),
-          ],
-        ),
+        
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

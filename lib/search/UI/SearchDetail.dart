@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gif_with_bloc/model/gif_model.dart';
+import 'dart:math' as math;
 
 class SearchDetail extends StatelessWidget {
   final GifModel gifModel;
@@ -7,6 +8,7 @@ class SearchDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     var col = Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
@@ -14,17 +16,11 @@ class SearchDetail extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.9),
-                  blurRadius: 14,
-                  offset: const Offset(0, 0),
-                ),
-              ],
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: col, width: 4)
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
+              borderRadius: BorderRadius.circular(20),
               child: SizedBox.fromSize(
                 size: const Size.fromRadius(144),
                 child: Image.network(
@@ -38,22 +34,7 @@ class SearchDetail extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Container(
               padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.4),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blueAccent.withOpacity(0.2),
-                    blurRadius: 10,
-                    offset: Offset(0, 5),
-                  ),
-                  BoxShadow(
-                    color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
-                    blurRadius: 10,
-                    offset: Offset(-3, -3),
-                  ),
-                ],
-              ),
+              
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -66,7 +47,7 @@ class SearchDetail extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  Divider(color: Colors.blue.withOpacity(0.5), thickness: 1),
+                  Divider(color: Color.fromARGB(255, 79, 199, 254), thickness: 2),
                   SizedBox(height: 20),
                   Text(
                     "GIF title: ${gifModel.title}",
@@ -76,7 +57,7 @@ class SearchDetail extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  Divider(color: Colors.blue.withOpacity(0.5), thickness: 1),
+                  Divider(color: Color.fromARGB(255, 79, 199, 254), thickness: 2),
                   SizedBox(height: 20),
                   Text(
                     "GIF user: ${gifModel.user}",
