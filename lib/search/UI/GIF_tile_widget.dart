@@ -16,7 +16,7 @@ class GifTileWidget extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-                
+                color: col,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: col, width: 4)),
             child: ClipRRect(
