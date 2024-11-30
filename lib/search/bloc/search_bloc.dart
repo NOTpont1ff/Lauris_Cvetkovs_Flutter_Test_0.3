@@ -58,7 +58,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       LoadMoreGifs event, Emitter<SearchState> emit) async {
         var connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
-      emit(SearchErrorState(message: 'No internet connection.'));
+      emit(SearchErrorState(message: 'No internet connection'));
       return;
     }
     final currentState = state;
@@ -87,7 +87,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Future<void> _onInitialEvent(
       InitialEvent event, Emitter<SearchState> emit) async {
     
-//emit(SearchErrorState(message: 'No internet connection.'));
+//emit(SearchErrorState(message: 'No internet connection'));
     emit(SearchInitial());
   }
 }

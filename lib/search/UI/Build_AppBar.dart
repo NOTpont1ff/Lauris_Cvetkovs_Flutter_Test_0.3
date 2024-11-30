@@ -8,8 +8,8 @@ class BuildAppbar extends StatelessWidget {
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 79, 199, 254),
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
         ),
         
       ),

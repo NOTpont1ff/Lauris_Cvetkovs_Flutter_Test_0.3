@@ -190,7 +190,7 @@ class _SearchScreenState extends State<SearchScreen> {
           case SearchErrorState:
             final errorState = state as SearchErrorState;
             return Scaffold(
-              backgroundColor: Colors.white,
+              backgroundColor: const Color.fromARGB(255, 39, 39, 39),
               body: Center(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -200,11 +200,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       padding: const EdgeInsets.all(20),
                       margin: const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.red.shade300, Colors.red.shade700],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+                        color: Colors.red,
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
