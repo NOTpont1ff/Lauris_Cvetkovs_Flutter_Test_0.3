@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class BuildAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SafeArea(child: 
+    Container(
       height: 70,
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 79, 199, 254),
@@ -24,6 +25,6 @@ class BuildAppbar extends StatelessWidget {
           
         ),
       ),
-    );
+    ));
   }
 }

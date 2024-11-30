@@ -9,7 +9,7 @@ class GifTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var col = Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
-    return Container(
+    return SafeArea( child: Container(
       margin: const EdgeInsets.all(1),
       padding: const EdgeInsets.all(1),
       child: Column(
@@ -32,6 +32,6 @@ class GifTileWidget extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }

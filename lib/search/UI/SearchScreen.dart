@@ -34,13 +34,15 @@ class _SearchScreenState extends State<SearchScreen> {
       builder: (context, state) {
         switch (state.runtimeType) {
           case SearchLoadingState:
-            return Scaffold(
+            return SafeArea(child: 
+             Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),
-            );
+            ));
           case SearchInitial:
-            return Scaffold(
+            return SafeArea(child: 
+            Scaffold(
               backgroundColor: const Color.fromARGB(255, 39, 39, 39),
               body: Container(
                   child: Column(
@@ -54,11 +56,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   EnterText(),
                 ],
               )),
-            );
+            ));
 
           case SearchLoadedSuccessState:
             final successState = state as SearchLoadedSuccessState;
-            return Scaffold(
+            return SafeArea(child: Scaffold(
               backgroundColor: const Color.fromARGB(255, 39, 39, 39),
               body: Container(
                   child: Column(
@@ -124,11 +126,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ],
               )),
-            );
+            ));
 
           case SearchDetailState:
             final successState = state as SearchDetailState;
-            return Scaffold(
+            return SafeArea(child: Scaffold(
+            
               backgroundColor: const Color.fromARGB(255, 39, 39, 39),
               body: Container(
                   child: Column(
@@ -170,9 +173,10 @@ class _SearchScreenState extends State<SearchScreen> {
                   SearchDetail(gifModel: successState.gif)
                 ],
               )),
-            );
+            ));
           case NoGifsFoundState:
-            return Scaffold(
+            return SafeArea(
+              child: Scaffold(
               backgroundColor: const Color.fromARGB(255, 39, 39, 39),
               body: Container(
                   child: Column(
@@ -186,10 +190,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   NoGifsFound(),
                 ],
               )),
-            );
+            )) ;
           case SearchErrorState:
             final errorState = state as SearchErrorState;
-            return Scaffold(
+            return SafeArea(
+              child: Scaffold(
               backgroundColor: const Color.fromARGB(255, 39, 39, 39),
               body: Center(
                   child: Column(
@@ -239,7 +244,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           style: TextStyle(fontSize: 17)),
                     )
                   ])),
-            );
+            ),);
           default:
             return SizedBox();
         }

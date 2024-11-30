@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class NoGifsFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return SafeArea(child: 
+    Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
         padding: const EdgeInsets.all(16.0),
@@ -40,6 +41,6 @@ class NoGifsFound extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 }
