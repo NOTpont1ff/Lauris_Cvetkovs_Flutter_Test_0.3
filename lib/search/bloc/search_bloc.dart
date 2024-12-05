@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:bloc/bloc.dart';
@@ -10,17 +11,22 @@ part 'search_event.dart';
 part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
+  final GiphyApi giphyApi;
+  final Connectivity connectivity;
   int _page = 1;
   final int _limit = 20;
   String _currentQuery = '';
 
-  SearchBloc() : super(SearchInitial()) {
+  SearchBloc({required this.giphyApi, required this.connectivity}) : super(SearchInitial()) {
     on<SearchButtonClicked>(_onSearchButtonClicked,
         transformer: debounce(Duration(milliseconds: 300)));
-    on<LoadMoreGifs>(_onLoadMoreGifs);
+    on<LoadMoreGifs>(onLoadMoreGifs);
     on<GifClicked>(_onGifClicked);
     on<InitialEvent>(_onInitialEvent);
-  }
+  
+
+  // Rest of the code remains the same
+}
 
   EventTransformer<T> debounce<T>(Duration duration) {
     return (events, mapper) => events.debounceTime(duration).flatMap(mapper);
@@ -32,17 +38,16 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     _currentQuery = event.text.trim();
     if (_currentQuery.isEmpty) {
       emit(SearchInitial());
-
       return;
     }
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
+    var connectivity = await Connectivity().checkConnectivity();
+    if (connectivity == ConnectivityResult.none) {
       emit(SearchErrorState(message: 'No internet connection.'));
       return;
     }
-    //emit(SearchLoadingState());
+
     try {
-      final gifs = await GiphyApi.fetchGifs(_currentQuery, _page);
+      final gifs = await giphyApi.fetchGifs(_currentQuery, _page);
       if (gifs.isNotEmpty) {
         emit(SearchLoadedSuccessState(
             gifs: gifs, hasReachedMax: gifs.length < _limit));
@@ -50,14 +55,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         emit(NoGifsFoundState());
       }
     } catch (e) {
-      emit(SearchErrorState());
+      emit(SearchErrorState(message: 'Error fetching GIFs. Please try again later.'));
     }
   }
 
-  Future<void> _onLoadMoreGifs(
+  Future<void> onLoadMoreGifs(
       LoadMoreGifs event, Emitter<SearchState> emit) async {
-        var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
+    var connectivity = await Connectivity().checkConnectivity();
+    if (connectivity == ConnectivityResult.none) {
       emit(SearchErrorState(message: 'No internet connection'));
       return;
     }
@@ -66,7 +71,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         !currentState.hasReachedMax) {
       try {
         _page++;
-        final newGifs = await GiphyApi.fetchGifs(_currentQuery, _page);
+        final newGifs = await giphyApi.fetchGifs(_currentQuery, _page);
         final allGifs = List<GifModel>.from(currentState.gifs)..addAll(newGifs);
 
         emit(SearchLoadedSuccessState(
@@ -74,20 +79,17 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           hasReachedMax: newGifs.length < _limit,
         ));
       } catch (e) {
-        emit(SearchErrorState());
+        emit(SearchErrorState(message: 'Error loading more GIFs.'));
       }
     }
   }
 
   void _onGifClicked(GifClicked event, Emitter<SearchState> emit) {
-    
     emit(SearchDetailState(gif: event.gif));
   }
 
   Future<void> _onInitialEvent(
       InitialEvent event, Emitter<SearchState> emit) async {
-    
-//emit(SearchErrorState(message: 'No internet connection'));
     emit(SearchInitial());
   }
 }

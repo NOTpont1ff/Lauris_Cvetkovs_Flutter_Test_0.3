@@ -1,18 +1,24 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-
-import 'search/UI/SearchScreen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gif_with_bloc/API/giphy_api.dart';
+import 'package:gif_with_bloc/search/bloc/search_bloc.dart';
+import 'package:gif_with_bloc/search/UI/SearchScreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget{
-  const MyApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SearchScreen(),
+      title: 'GIF Search',
+      theme: ThemeData.dark(),
+      home: BlocProvider(
+        create: (context) => SearchBloc(giphyApi: GiphyApi(), connectivity: Connectivity()), // Providing the bloc here
+        child: SearchScreen(),
+      ),
     );
   }
 }

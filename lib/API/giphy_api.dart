@@ -7,7 +7,7 @@ class GiphyApi {
 
   static const String _baseUrl = 'https://api.giphy.com/v1/gifs/search';
 
-  static Future<List<GifModel>> fetchGifs(String query, int page) async {
+  Future<List<GifModel>> fetchGifs(String query, int page) async {
     final limit = 25;
     final offset = (page - 1) * limit;
 
