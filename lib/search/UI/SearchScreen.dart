@@ -20,7 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    
+
     context.read<SearchBloc>().add(InitialEvent());
   }
 
@@ -29,17 +29,18 @@ class _SearchScreenState extends State<SearchScreen> {
     return BlocConsumer<SearchBloc, SearchState>(
       listenWhen: (previous, current) => current is SearchActionState,
       buildWhen: (previous, current) => current is! SearchActionState,
-      listener: (context, state) {
-       
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         switch (state.runtimeType) {
           case SearchLoadingState:
-            return SafeArea(child: Scaffold(body: Center(child: CircularProgressIndicator())));
+            return SafeArea(
+                child:
+                    Scaffold(body: Center(child: CircularProgressIndicator())));
 
           case SearchInitial:
             return SafeArea(
               child: Scaffold(
+                resizeToAvoidBottomInset: false,
                 backgroundColor: const Color.fromARGB(255, 39, 39, 39),
                 body: Column(
                   children: [
@@ -65,13 +66,16 @@ class _SearchScreenState extends State<SearchScreen> {
                     Flexible(
                       child: NotificationListener<ScrollNotification>(
                         onNotification: (ScrollNotification scrollInfo) {
-                          if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent * 0.9) {
-                            context.read<SearchBloc>().add(LoadMoreGifs(text: _textController.text.trim()));
+                          if (scrollInfo.metrics.pixels >=
+                              scrollInfo.metrics.maxScrollExtent * 0.9) {
+                            context.read<SearchBloc>().add(LoadMoreGifs(
+                                text: _textController.text.trim()));
                           }
                           return false;
                         },
                         child: GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 0.2,
                             mainAxisSpacing: 0.2,
@@ -89,7 +93,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                     color: Colors.white,
                                     shadows: [
                                       Shadow(
-                                        color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.4),
+                                        color: const Color.fromARGB(
+                                                255, 255, 255, 255)
+                                            .withOpacity(0.4),
                                         blurRadius: 10,
                                         offset: Offset(0, 2),
                                       ),
@@ -100,10 +106,13 @@ class _SearchScreenState extends State<SearchScreen> {
                             }
                             return GestureDetector(
                               onTap: () {
-                                print('GIF clicked: ${successState.gifs[index].title}');
-                                context.read<SearchBloc>().add(GifClicked(gif: successState.gifs[index]));
+                                print(
+                                    'GIF clicked: ${successState.gifs[index].title}');
+                                context.read<SearchBloc>().add(
+                                    GifClicked(gif: successState.gifs[index]));
                               },
-                              child: GifTileWidget(gifModel: successState.gifs[index]),
+                              child: GifTileWidget(
+                                  gifModel: successState.gifs[index]),
                             );
                           },
                         ),
@@ -118,38 +127,51 @@ class _SearchScreenState extends State<SearchScreen> {
             final successState = state as SearchDetailState;
             return SafeArea(
               child: Scaffold(
+                resizeToAvoidBottomInset: false,
                 backgroundColor: const Color.fromARGB(255, 39, 39, 39),
-                body: Column(
-                  children: [
-                    BuildAppbar(),
-                    Text('', style: TextStyle(fontSize: 10)),
-                    _buildSearchBar(),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.read<SearchBloc>().add(SearchButtonClicked(text: _textController.text.trim()));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 79, 199, 254),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                              elevation: 8,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.arrow_left, color: Colors.white),
-                                Text('Go Back', style: TextStyle(color: Colors.white)),
-                              ],
+                body: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      BuildAppbar(),
+                      const SizedBox(
+                          height: 10), // Replacing the empty text widget
+                      _buildSearchBar(),
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context.read<SearchBloc>().add(
+                                    SearchButtonClicked(
+                                        text: _textController.text.trim()));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 79, 199, 254),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                elevation: 8,
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Icon(Icons.arrow_left, color: Colors.white),
+                                  Text('Go Back',
+                                      style: TextStyle(color: Colors.white)),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SearchDetail(gifModel: successState.gif),
-                  ],
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SearchDetail(gifModel: successState.gif),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -211,11 +233,14 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                       ),
                       TextButton(
-                        style: ButtonStyle(foregroundColor: WidgetStateProperty.all<Color>(Colors.blue)),
+                        style: ButtonStyle(
+                            foregroundColor:
+                                WidgetStateProperty.all<Color>(Colors.blue)),
                         onPressed: () {
                           context.read<SearchBloc>().add(InitialEvent());
                         },
-                        child: Text('Go to the initial page', style: TextStyle(fontSize: 17)),
+                        child: Text('Go to the initial page',
+                            style: TextStyle(fontSize: 17)),
                       ),
                     ],
                   ),
@@ -239,20 +264,30 @@ class _SearchScreenState extends State<SearchScreen> {
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.8),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: const Color.fromARGB(255, 79, 199, 254), width: 4),
+          border: Border.all(
+              color: const Color.fromARGB(255, 79, 199, 254), width: 4),
         ),
         child: TextField(
           style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
           controller: _textController,
           decoration: InputDecoration(
             labelText: 'Search for GIFs',
-            labelStyle: TextStyle(color: Colors.black.withOpacity(0.6), fontSize: 16, fontWeight: FontWeight.w400),
+            labelStyle: TextStyle(
+                color: Colors.black.withOpacity(0.6),
+                fontSize: 16,
+                fontWeight: FontWeight.w400),
             border: InputBorder.none,
-            suffixIcon: Icon(Icons.search_outlined, size: 30.0, color: Colors.black,),
+            suffixIcon: Icon(
+              Icons.search_outlined,
+              size: 30.0,
+              color: Colors.black,
+            ),
           ),
           cursorColor: Color(0xFF4facfe),
           onChanged: (value) {
-            context.read<SearchBloc>().add(SearchButtonClicked(text: value.trim()));
+            context
+                .read<SearchBloc>()
+                .add(SearchButtonClicked(text: value.trim()));
           },
         ),
       ),

@@ -9,7 +9,7 @@ class GifTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var col = Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
-    return SafeArea( child: Container(
+    return SafeArea( child: AspectRatio(aspectRatio: 100 / 100,child:Container(
       margin: const EdgeInsets.all(1),
       padding: const EdgeInsets.all(1),
       child: Column(
@@ -22,7 +22,7 @@ class GifTileWidget extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: SizedBox.fromSize(
-                size: const Size.fromRadius(90),
+                size: Size.fromRadius(80),
                 child: Image.network(
                   gifModel.url,
                   fit: BoxFit.cover,
@@ -32,6 +32,6 @@ class GifTileWidget extends StatelessWidget {
           ),
         ],
       ),
-    ));
+    )));
   }
 }
