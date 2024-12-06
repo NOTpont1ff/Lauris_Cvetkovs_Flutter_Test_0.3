@@ -20,7 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    // Triggering InitialEvent here if needed
+    
     context.read<SearchBloc>().add(InitialEvent());
   }
 
@@ -30,7 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
       listenWhen: (previous, current) => current is SearchActionState,
       buildWhen: (previous, current) => current is! SearchActionState,
       listener: (context, state) {
-        // You can add any actions here based on state change if needed
+       
       },
       builder: (context, state) {
         switch (state.runtimeType) {
@@ -73,8 +73,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: GridView.builder(
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            crossAxisSpacing: 0.1,
-                            mainAxisSpacing: 0.1,
+                            crossAxisSpacing: 0.2,
+                            mainAxisSpacing: 0.2,
                             childAspectRatio: 1,
                           ),
                           itemCount: successState.gifs.length + 1,

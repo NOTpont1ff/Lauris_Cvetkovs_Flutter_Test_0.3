@@ -11,11 +11,13 @@ part 'search_event.dart';
 part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
+  
   final GiphyApi giphyApi;
   final Connectivity connectivity;
   int _page = 1;
   final int _limit = 20;
   String _currentQuery = '';
+  bool isLoading = false;
 
   SearchBloc({required this.giphyApi, required this.connectivity}) : super(SearchInitial()) {
     on<SearchButtonClicked>(_onSearchButtonClicked,
@@ -23,10 +25,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<LoadMoreGifs>(onLoadMoreGifs);
     on<GifClicked>(_onGifClicked);
     on<InitialEvent>(_onInitialEvent);
-  
-
-  // Rest of the code remains the same
-}
+  }
 
   EventTransformer<T> debounce<T>(Duration duration) {
     return (events, mapper) => events.debounceTime(duration).flatMap(mapper);
@@ -61,26 +60,37 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   Future<void> onLoadMoreGifs(
       LoadMoreGifs event, Emitter<SearchState> emit) async {
+    if (isLoading) {
+      return;
+    }
+
+    isLoading = true;
+
     var connectivity = await Connectivity().checkConnectivity();
     if (connectivity == ConnectivityResult.none) {
       emit(SearchErrorState(message: 'No internet connection'));
+      isLoading = false;
       return;
     }
+
     final currentState = state;
-    if (currentState is SearchLoadedSuccessState &&
-        !currentState.hasReachedMax) {
+    if (currentState is SearchLoadedSuccessState && !currentState.hasReachedMax) {
       try {
         _page++;
-        final newGifs = await giphyApi.fetchGifs(_currentQuery, _page);
+        var newGifs = await giphyApi.fetchGifs(_currentQuery, _page);
         final allGifs = List<GifModel>.from(currentState.gifs)..addAll(newGifs);
-
+        print('FETCHED GIFS ARE: ${allGifs.length}, ${newGifs.length}');
         emit(SearchLoadedSuccessState(
           gifs: allGifs,
           hasReachedMax: newGifs.length < _limit,
         ));
       } catch (e) {
         emit(SearchErrorState(message: 'Error loading more GIFs.'));
+      } finally {
+        isLoading = false;
       }
+    } else {
+      isLoading = false;
     }
   }
 

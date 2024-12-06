@@ -3,12 +3,12 @@ import 'package:http/http.dart' as http;
 import '../model/gif_model.dart';
 
 class GiphyApi {
-  static const String _apiKey = 'pH0IuBOOD4LkybhhTyulO94w4bh6OtP9';
+  static const String _apiKey = '0f1xWSqDaoFEZN7E2XUU8TiMJ6tb2JMJ';
 
   static const String _baseUrl = 'https://api.giphy.com/v1/gifs/search';
 
   Future<List<GifModel>> fetchGifs(String query, int page) async {
-    final limit = 25;
+    final limit = 20;
     final offset = (page - 1) * limit;
 
     try {
@@ -18,7 +18,7 @@ class GiphyApi {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List<dynamic> gifsJson = data['data'];
-        print('Fetched GIFs: $gifsJson');
+        print('Fetched GIFs (giphy_api.dart)');
         List<GifModel> gifs = [];
         for (var gif in gifsJson) {
           gifs.add(GifModel.fromJson(gif));
