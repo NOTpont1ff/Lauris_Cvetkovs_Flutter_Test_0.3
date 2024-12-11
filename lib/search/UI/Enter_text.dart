@@ -40,7 +40,7 @@ class EnterText extends StatelessWidget {
             Divider(color: Color.fromARGB(255, 79, 199, 254), thickness: 2),
             SizedBox(height: 20),
             Text(
-              "This app is made by Lauris Cvetkovs, using Flutter version 3.24.3\n\nThe UI is inspired by Giphy itself",
+              "This app is made by Lauris Cvetkovs, using Flutter version 3.24.5\n\nThe UI is inspired by Giphy itself",
               style: TextStyle(
                 fontSize: 20,
                 color: const Color.fromARGB(166, 255, 255, 255),
