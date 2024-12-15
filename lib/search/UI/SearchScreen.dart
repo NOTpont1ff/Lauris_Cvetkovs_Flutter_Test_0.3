@@ -34,8 +34,22 @@ class _SearchScreenState extends State<SearchScreen> {
         switch (state.runtimeType) {
           case SearchLoadingState:
             return SafeArea(
-                child:
-                    Scaffold(body: Center(child: CircularProgressIndicator())));
+              child: Scaffold(
+                backgroundColor: const Color.fromARGB(255, 39, 39, 39),
+                body: Column(
+                  children: [
+                    BuildAppbar(),
+                    Text('', style: TextStyle(fontSize: 10)),
+                    _buildSearchBar(),
+                    Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
 
           case SearchInitial:
             return SafeArea(
@@ -83,37 +97,34 @@ class _SearchScreenState extends State<SearchScreen> {
                           ),
                           itemCount: successState.gifs.length + 1,
                           itemBuilder: (context, index) {
-                            if (index == successState.gifs.length) {
+                            if (index < successState.gifs.length) {
+                              return GestureDetector(
+                                onTap: () {
+                                  print(
+                                      'GIF clicked: ${successState.gifs[index].title}');
+                                  context.read<SearchBloc>().add(
+                                        GifClicked(
+                                            gif: successState.gifs[index]),
+                                      );
+                                },
+                                child: GifTileWidget(
+                                    gifModel: successState.gifs[index]),
+                              );
+                            } else if (20 != successState.gifCount) {
                               return Center(
                                 child: Text(
-                                  'No more\n GIFs :(',
+                                  'No more\nGIFs :(',
                                   style: TextStyle(
                                     fontSize: 29,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
-                                    shadows: [
-                                      Shadow(
-                                        color: const Color.fromARGB(
-                                                255, 255, 255, 255)
-                                            .withOpacity(0.4),
-                                        blurRadius: 10,
-                                        offset: Offset(0, 2),
-                                      ),
-                                    ],
                                   ),
+                                  textAlign: TextAlign.center,
                                 ),
                               );
+                            } else {
+                              return Center(child: CircularProgressIndicator());
                             }
-                            return GestureDetector(
-                              onTap: () {
-                                print(
-                                    'GIF clicked: ${successState.gifs[index].title}');
-                                context.read<SearchBloc>().add(
-                                    GifClicked(gif: successState.gifs[index]));
-                              },
-                              child: GifTileWidget(
-                                  gifModel: successState.gifs[index]),
-                            );
                           },
                         ),
                       ),
@@ -134,8 +145,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       BuildAppbar(),
-                      const SizedBox(
-                          height: 10), // Replacing the empty text widget
+                      const SizedBox(height: 10),
                       _buildSearchBar(),
                       Row(
                         children: [

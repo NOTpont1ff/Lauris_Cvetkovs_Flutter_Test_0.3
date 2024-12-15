@@ -11,7 +11,6 @@ part 'search_event.dart';
 part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  
   final GiphyApi giphyApi;
   final Connectivity connectivity;
   int _page = 1;
@@ -19,7 +18,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   String _currentQuery = '';
   bool isLoading = false;
 
-  SearchBloc({required this.giphyApi, required this.connectivity}) : super(SearchInitial()) {
+  SearchBloc({required this.giphyApi, required this.connectivity})
+      : super(SearchInitial()) {
     on<SearchButtonClicked>(_onSearchButtonClicked,
         transformer: debounce(Duration(milliseconds: 300)));
     on<LoadMoreGifs>(onLoadMoreGifs);
@@ -33,8 +33,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   Future<void> _onSearchButtonClicked(
       SearchButtonClicked event, Emitter<SearchState> emit) async {
+    emit(SearchLoadingState());
     _page = 1;
     _currentQuery = event.text.trim();
+
     if (_currentQuery.isEmpty) {
       emit(SearchInitial());
       return;
@@ -47,14 +49,17 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     try {
       final gifs = await giphyApi.fetchGifs(_currentQuery, _page);
+      final gifCount = gifs.length;
       if (gifs.isNotEmpty) {
         emit(SearchLoadedSuccessState(
-            gifs: gifs, hasReachedMax: gifs.length < _limit));
+            gifs: gifs, hasReachedMax: gifs.length < _limit, gifCount: gifCount
+            ));
       } else {
         emit(NoGifsFoundState());
       }
     } catch (e) {
-      emit(SearchErrorState(message: 'Error fetching GIFs. Please try again later.'));
+      emit(SearchErrorState(
+          message: 'Error fetching GIFs. Please try again later.'));
     }
   }
 
@@ -74,15 +79,21 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     }
 
     final currentState = state;
-    if (currentState is SearchLoadedSuccessState && !currentState.hasReachedMax) {
+    if (currentState is SearchLoadedSuccessState &&
+        !currentState.hasReachedMax) {
       try {
+
+
+        
         _page++;
         var newGifs = await giphyApi.fetchGifs(_currentQuery, _page);
+        var gifCount = newGifs.length;
         final allGifs = List<GifModel>.from(currentState.gifs)..addAll(newGifs);
         print('FETCHED GIFS ARE: ${allGifs.length}, ${newGifs.length}');
         emit(SearchLoadedSuccessState(
           gifs: allGifs,
           hasReachedMax: newGifs.length < _limit,
+          gifCount: gifCount,
         ));
       } catch (e) {
         emit(SearchErrorState(message: 'Error loading more GIFs.'));

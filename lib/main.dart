@@ -8,7 +8,6 @@ import 'package:gif_with_bloc/search/UI/SearchScreen.dart';
 void main() {
   runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'GIF Search',
       theme: ThemeData.dark(),
       home: BlocProvider(
-        create: (context) => SearchBloc(giphyApi: GiphyApi(), connectivity: Connectivity()), // Providing the bloc here
+        create: (context) => SearchBloc(giphyApi: GiphyApi(), connectivity: Connectivity()),
         child: SearchScreen(),
       ),
     );

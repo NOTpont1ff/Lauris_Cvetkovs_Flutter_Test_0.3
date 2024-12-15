@@ -13,11 +13,12 @@ final class SearchInitial extends SearchState {}
 
 class SearchLoadingState extends SearchState {}
 
+// ignore: must_be_immutable
 class SearchLoadedSuccessState extends SearchState {
   final List<GifModel> gifs;
   final bool hasReachedMax;
-
-  SearchLoadedSuccessState({required this.gifs, this.hasReachedMax = false});
+  var gifCount;
+  SearchLoadedSuccessState({required this.gifs, this.hasReachedMax = false, this.gifCount});
 
   @override
   List<Object?> get props => [gifs, hasReachedMax]; 
