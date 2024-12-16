@@ -33,16 +33,17 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   Future<void> _onSearchButtonClicked(
       SearchButtonClicked event, Emitter<SearchState> emit) async {
+    if (event.text.trim().isEmpty) {
+      emit(SearchInitial());
+      return;
+    }
+
     emit(SearchLoadingState());
     _page = 1;
     _currentQuery = event.text.trim();
 
-    if (_currentQuery.isEmpty) {
-      emit(SearchInitial());
-      return;
-    }
-    var connectivity = await Connectivity().checkConnectivity();
-    if (connectivity == ConnectivityResult.none) {
+    var connectivityResult = await connectivity.checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
       emit(SearchErrorState(message: 'No internet connection.'));
       return;
     }
@@ -52,8 +53,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       final gifCount = gifs.length;
       if (gifs.isNotEmpty) {
         emit(SearchLoadedSuccessState(
-            gifs: gifs, hasReachedMax: gifs.length < _limit, gifCount: gifCount
-            ));
+            gifs: gifs, hasReachedMax: gifs.length < _limit, gifCount: gifCount));
       } else {
         emit(NoGifsFoundState());
       }
@@ -66,30 +66,27 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Future<void> onLoadMoreGifs(
       LoadMoreGifs event, Emitter<SearchState> emit) async {
     if (isLoading) {
-      return;
+      return; 
     }
 
     isLoading = true;
 
-    var connectivity = await Connectivity().checkConnectivity();
-    if (connectivity == ConnectivityResult.none) {
+  
+    var connectivityResult = await connectivity.checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
       emit(SearchErrorState(message: 'No internet connection'));
       isLoading = false;
       return;
     }
 
     final currentState = state;
-    if (currentState is SearchLoadedSuccessState &&
-        !currentState.hasReachedMax) {
+    if (currentState is SearchLoadedSuccessState && !currentState.hasReachedMax) {
       try {
-
-
-        
         _page++;
         var newGifs = await giphyApi.fetchGifs(_currentQuery, _page);
         var gifCount = newGifs.length;
         final allGifs = List<GifModel>.from(currentState.gifs)..addAll(newGifs);
-        print('FETCHED GIFS ARE: ${allGifs.length}, ${newGifs.length}');
+        
         emit(SearchLoadedSuccessState(
           gifs: allGifs,
           hasReachedMax: newGifs.length < _limit,
