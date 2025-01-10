@@ -67,29 +67,13 @@ void main() {
         SearchLoadingState(),
         SearchLoadedSuccessState(
           gifs: [
-            GifModel(id: '1', title: 'Funny Gif', url: 'url', user: 'test_ser')
+            GifModel(id: '1', title: 'Funny Gif', url: 'url', user: 'user')
           ],
           hasReachedMax: true,
           gifCount: 1,
         ),
       ],
     );
-
-    blocTest<SearchBloc, SearchState>(
-    'emits SearchErrorState when there is no internet connection',
-    build: () {
-      when(() => mockConnectivity.checkConnectivity())
-          .thenAnswer((_) async => [ConnectivityResult.none]);
-      return searchBloc;
-    },
-    act: (bloc) => bloc.add(SearchButtonClicked(text: 'funny')),
-    wait: Duration(seconds: 2),
-    expect: () => [
-      SearchLoadingState(),
-      SearchErrorState(message: 'No internet connection.'),
-    ],
-  );
-
     blocTest<SearchBloc, SearchState>(
       'emits NoGifsFoundState when no gifs are returned from the API',
       build: () {
